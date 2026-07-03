@@ -145,7 +145,9 @@ export default function Process() {
         }
 
         // Cards fade-in slide-right
-        const wrappers = gsap.utils.toArray(".process-card-wrapper");
+        const wrappers = Array.from(
+          document.querySelectorAll<HTMLElement>(".process-card-wrapper")
+        );
         wrappers.forEach((wrapper) => {
           gsap.fromTo(
             wrapper,

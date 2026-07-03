@@ -41,7 +41,9 @@ export default function ServiceDetailPage({ slug }: ServiceDetailPageProps) {
     const related = relatedRef.current;
 
     if (hero) {
-      const items = hero.querySelectorAll(".animate-hero");
+      const items = Array.from(
+        hero.querySelectorAll<HTMLElement>(".animate-hero")
+      );
       gsap.fromTo(
         items,
         { opacity: 0, y: 30 },
@@ -57,7 +59,9 @@ export default function ServiceDetailPage({ slug }: ServiceDetailPageProps) {
 
     const animateSection = (section: HTMLElement | null, selector: string) => {
       if (!section) return;
-      const items = section.querySelectorAll(selector);
+      const items = Array.from(
+        section.querySelectorAll<HTMLElement>(selector)
+      );
       gsap.fromTo(
         items,
         { opacity: 0, y: 36 },
