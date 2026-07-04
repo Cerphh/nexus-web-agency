@@ -229,13 +229,12 @@ export default function Navbar() {
             >
               Our Process
             </button>
-            <button
-              type="button"
-              onClick={() => handleScroll("portfolio")}
-              className="w-full py-3 text-left text-base font-medium text-zinc-300 hover:text-white active:bg-white/5 rounded-lg px-2 cursor-pointer transition-colors duration-200 touch-manipulation"
-            >
-              Work Showcase
-            </button>
+             <Link
+            href="/work"
+            className="text-sm font-medium text-zinc-400 hover:text-white cursor-pointer transition-colors duration-200 touch-manipulation"
+          >
+            Our Work
+          </Link>
             <button
               type="button"
               onClick={() => handleScroll("stats")}
