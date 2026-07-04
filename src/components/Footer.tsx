@@ -1,6 +1,7 @@
 "use client";
 
 import { Cpu, ArrowUp } from "lucide-react";
+import Image from "next/image";
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -16,8 +17,14 @@ export default function Footer() {
         
         {/* Brand */}
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center">
-            <Cpu className="w-4 h-4 text-white" />
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr  flex items-center justify-center">
+            <Image
+                src="/nexuslogomain.png"
+                alt="Nexus logo"
+                width={40}
+                height={40}
+                className="w-16 h-16 object-contain" // scale up until it visually fills the space
+              />
           </div>
           <span className="font-sans font-black text-lg tracking-wider text-white">
             NEXUS
