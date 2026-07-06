@@ -108,7 +108,7 @@ export default function ContactPage() {
               <div className="space-y-5 sm:space-y-6">
                 {[
                   { icon: Mail, label: "Email", value: "nexuscreatives.dev@gmail.com" },
-                  { icon: Phone, label: "Call/Text", value: "+1 (555) 000-0000" },
+                  { icon: Phone, label: "Call/Text", value: "+63 992 629 6059" },
                   { icon: MapPin, label: "Base", value: "Batangas PH" },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3 sm:gap-4 group">
@@ -169,7 +169,7 @@ export default function ContactPage() {
                   />
                 </div>
                 <textarea
-                  placeholder="Tell us about your project..."
+                  placeholder="Tell us about your project, business, or challenge. The more details, the better we can assist you."
                   rows={5}
                   required
                   value={formState.message}

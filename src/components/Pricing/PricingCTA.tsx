@@ -4,6 +4,7 @@ import { ArrowRight, CalendarDays } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -82,41 +83,25 @@ export default function PricingCTA() {
             {/* Buttons */}
 
             <div className="mt-12 flex flex-col justify-center gap-5 sm:flex-row">
-
-              <button
+ 
+              <Link
+                href="/contact"
                 className="group rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 px-8 py-4 font-semibold text-white shadow-[0_10px_50px_rgba(59,130,246,.35)] transition-all duration-300 hover:scale-105 hover:shadow-[0_20px_60px_rgba(59,130,246,.5)]"
               >
-
+ 
                 <span className="flex items-center justify-center gap-2">
-
+ 
                   Get a Free Quote
-
+ 
                   <ArrowRight
                     size={18}
                     className="transition-transform duration-300 group-hover:translate-x-1"
                   />
-
+ 
                 </span>
-
-              </button>
-
-              <button
-                className="group rounded-full border border-white/10 bg-white/5 px-8 py-4 font-semibold text-white backdrop-blur-xl transition-all duration-300 hover:border-blue-500/40 hover:bg-white/10"
-              >
-
-                <span className="flex items-center justify-center gap-2">
-
-                  Book a Consultation
-
-                  <CalendarDays
-                    size={18}
-                    className="transition-transform duration-300 group-hover:rotate-12"
-                  />
-
-                </span>
-
-              </button>
-
+ 
+              </Link>
+ 
             </div>
 
             {/* Bottom Stats */}

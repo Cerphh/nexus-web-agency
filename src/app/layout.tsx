@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Syne, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/seo";
 
 const syne = Syne({
   variable: "--font-syne",
@@ -15,8 +16,49 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "NEXUS | Custom Website Design & Development Agency",
-  description: "NEXUS builds high-speed, high-converting digital engines that turn traffic into paying customers. Stop losing sales to outdated templates.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "NEXUS | Custom Website Design & Development Agency",
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/apple-icon.png",
+  },
+  keywords: [
+    "web design Batangas",
+    "website design Lipa City",
+    "web development agency Philippines",
+    "custom website design",
+  ],
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: "NEXUS | Custom Website Design & Development Agency",
+    description: SITE_DESCRIPTION,
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: SITE_NAME,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "NEXUS | Custom Website Design & Development Agency",
+    description: SITE_DESCRIPTION,
+    images: ["/og-image.jpg"],
+  },
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
+  },
 };
 
 export default function RootLayout({
