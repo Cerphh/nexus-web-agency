@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -15,11 +15,32 @@ import {
 
 gsap.registerPlugin(ScrollTrigger);
 
+type Currency = "USD" | "PHP";
+
+interface AddOnsProps {
+  currency: Currency;
+}
+
+interface AddOn {
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  title: string;
+  priceUSD?: number;
+  pricePHP?: number;
+  displayPrice?: string;
+  subtitle?: string;
+  suffix?: string;
+  description: string;
+  showLearnMore: boolean;
+  learnMoreHref?: string;
+}
+
 const addons = [
   {
     icon: FileText,
     title: "Extra Page",
-    price: "Starting at ₱1,800",
+    priceUSD: 35,
+    pricePHP: 1800,
+    subtitle: "Starting at",
     description:
       "Need more pages? Expand your website anytime without rebuilding it.",
     showLearnMore: false,
@@ -27,7 +48,9 @@ const addons = [
   {
     icon: CalendarCheck2,
     title: "Booking System",
-    price: "Starting at ₱8,000",
+    priceUSD: 150,
+    pricePHP: 8000,
+    subtitle: "Starting at",
     description:
       "Allow customers to schedule appointments directly from your website.",
     showLearnMore: false,
@@ -35,7 +58,9 @@ const addons = [
   {
     icon: PenTool,
     title: "Logo Design",
-    price: "Starting at ₱4,000",
+    priceUSD: 75,
+    pricePHP: 4000,
+    subtitle: "Starting at",
     description:
       "Create a professional brand identity that matches your business.",
     showLearnMore: false,
@@ -43,7 +68,9 @@ const addons = [
   {
     icon: Search,
     title: "SEO Package",
-    price: "Starting at ₱6,000",
+    priceUSD: 120,
+    pricePHP: 6000,
+    subtitle: "Starting at",
     description:
       "Improve your visibility on Google with on-page SEO optimization.",
     showLearnMore: true,
@@ -52,15 +79,36 @@ const addons = [
   {
     icon: Wrench,
     title: "Website Maintenance",
-    price: "Starting at ₱1,500/mo",
+    priceUSD: 30,
+    pricePHP: 1500,
+    subtitle: "Starting at",
+    suffix: "/mo",
     description:
       "Keep your website updated, secure, and running at peak performance.",
     showLearnMore: true,
     learnMoreHref: undefined,
   },
-];
+ ] satisfies AddOn[];
 
-export default function AddOns() {
+function formatPrice(addon: AddOn, activeCurrency: Currency) {
+  if (addon.displayPrice) {
+    return addon.displayPrice;
+  }
+
+  const amount = activeCurrency === "PHP" ? addon.pricePHP : addon.priceUSD;
+
+  if (typeof amount !== "number") {
+    return "Custom Quote";
+  }
+
+  const symbol = activeCurrency === "PHP" ? "₱" : "$";
+  const locale = activeCurrency === "PHP" ? "en-PH" : "en-US";
+  const suffix = addon.suffix ?? "";
+
+  return `${addon.subtitle ?? ""} ${symbol}${amount.toLocaleString(locale)}${suffix}`.trim();
+}
+
+export default function AddOns({ currency }: AddOnsProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const mainAddons = addons.slice(0, 3);
   const featuredAddons = addons.slice(3);
@@ -75,13 +123,13 @@ export default function AddOns() {
         <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-blue-500/10 blur-3xl opacity-0 transition duration-500 group-hover:opacity-100" />
 
         <div className="relative">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-500 shadow-lg">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-linear-to-r from-blue-500 to-cyan-500 shadow-lg">
             <Icon size={26} className="text-white" />
           </div>
 
           <h3 className="mt-6 text-2xl font-bold text-white">{addon.title}</h3>
 
-          <p className="mt-2 font-semibold text-blue-300">{addon.price}</p>
+          <p className="mt-2 font-semibold text-blue-300">{formatPrice(addon, currency)}</p>
 
           <p className="mt-5 leading-7 text-zinc-400">{addon.description}</p>
 

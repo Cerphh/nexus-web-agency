@@ -14,11 +14,31 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+type Currency = "USD" | "PHP";
+
+interface PricingCardsProps {
+  currency: Currency;
+}
+
+interface Plan {
+  icon: React.ComponentType<{ className?: string; size?: number }>;
+  title: string;
+  priceUSD?: number;
+  pricePHP?: number;
+  displayPrice?: string;
+  subtitle: string;
+  description: string;
+  features: string[];
+  button: string;
+  popular: boolean;
+}
+
 const plans = [
   {
     icon: Rocket,
     title: "Launch",
-    price: "₱5,000",
+    priceUSD: 100,
+    pricePHP: 5000,
     subtitle: "Starting at",
     description:
       "Perfect for freelancers, startups, and businesses needing a professional online presence.",
@@ -36,7 +56,8 @@ const plans = [
   {
     icon: Building2,
     title: "Grow",
-    price: "₱12,000",
+    priceUSD: 250,
+    pricePHP: 12000,
     subtitle: "Starting at",
     description:
       "Designed for local businesses that want to generate more customers.",
@@ -55,7 +76,8 @@ const plans = [
   {
     icon: BriefcaseBusiness,
     title: "Scale",
-    price: "₱25,000",
+    priceUSD: 500,
+    pricePHP: 25000,
     subtitle: "Starting at",
     description:
       "For businesses ready to grow online with advanced functionality.",
@@ -73,7 +95,7 @@ const plans = [
   {
     icon: Sparkles,
     title: "Nexus Custom",
-    price: "Custom Quote",
+    displayPrice: "Custom Quote",
     subtitle: "",
     description:
       "Custom systems tailored specifically to your business requirements.",
@@ -88,9 +110,26 @@ const plans = [
     button: "Book Consultation",
     popular: false,
   },
-];
+ ] satisfies Plan[];
 
-export default function PricingCards() {
+function formatPrice(plan: Plan, activeCurrency: Currency) {
+  if (plan.displayPrice) {
+    return plan.displayPrice;
+  }
+
+  const amount = activeCurrency === "PHP" ? plan.pricePHP : plan.priceUSD;
+
+  if (typeof amount !== "number") {
+    return "Custom Quote";
+  }
+
+  const symbol = activeCurrency === "PHP" ? "₱" : "$";
+  const locale = activeCurrency === "PHP" ? "en-PH" : "en-US";
+
+  return `${symbol}${amount.toLocaleString(locale)}`;
+}
+
+export default function PricingCards({ currency }: PricingCardsProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -147,9 +186,9 @@ export default function PricingCards() {
               >
                 {/* Top accent line */}
                 <div
-                  className={`absolute inset-x-0 top-0 h-[2px] ${
+                  className={`absolute inset-x-0 top-0 h-0.5 ${
                     plan.popular
-                      ? "bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500"
+                      ? "bg-linear-to-r from-blue-500 via-cyan-400 to-blue-500"
                       : "bg-white/10"
                   }`}
                 />
@@ -157,13 +196,13 @@ export default function PricingCards() {
                 <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(59,130,246,0.18),transparent_45%,rgba(34,211,238,0.08))] opacity-0 transition duration-500 group-hover:opacity-100" />
 
                 {plan.popular && (
-                  <div className="absolute right-5 top-6 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 px-3.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-lg shadow-blue-500/30">
+                  <div className="absolute right-5 top-6 rounded-full bg-linear-to-r from-blue-500 to-cyan-400 px-3.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-lg shadow-blue-500/30">
                     Most Popular
                   </div>
                 )}
 
                 <div className="relative flex h-full min-w-0 flex-col p-7 sm:p-8">
-                  <div className="mb-7 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 shadow-lg shadow-blue-500/25 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+                  <div className="mb-7 flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-blue-500 to-cyan-500 shadow-lg shadow-blue-500/25 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
                     <Icon className="text-white" size={22} />
                   </div>
 
@@ -178,8 +217,8 @@ export default function PricingCards() {
                       </p>
                     )}
 
-                    <h4 className="mt-2 break-words bg-gradient-to-r from-white to-blue-300 bg-clip-text text-3xl font-black leading-tight tracking-tight text-transparent sm:text-4xl">
-                      {plan.price}
+                    <h4 className="mt-2 wrap-break-word bg-linear-to-r from-white to-blue-300 bg-clip-text text-3xl font-black leading-tight tracking-tight text-transparent sm:text-4xl">
+                      {formatPrice(plan, currency)}
                     </h4>
                   </div>
 
@@ -204,8 +243,8 @@ export default function PricingCards() {
                     className={`group/btn mt-9 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-semibold transition-all duration-300
                     ${
                       plan.popular
-                        ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-[0_10px_40px_rgba(59,130,246,.3)] hover:scale-[1.02] hover:shadow-[0_16px_50px_rgba(59,130,246,.4)]"
-                        : "border border-white/15 bg-white/[0.03] text-white hover:border-white/30 hover:bg-white/[0.08]"
+                        ? "bg-linear-to-r from-blue-500 to-cyan-500 text-white shadow-[0_10px_40px_rgba(59,130,246,.3)] hover:scale-[1.02] hover:shadow-[0_16px_50px_rgba(59,130,246,.4)]"
+                        : "border border-white/15 bg-white/3 text-white hover:border-white/30 hover:bg-white/8"
                     }`}
                   >
                     {plan.button}

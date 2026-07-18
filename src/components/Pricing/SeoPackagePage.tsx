@@ -18,11 +18,30 @@ import {
 
 gsap.registerPlugin(ScrollTrigger);
 
+type Currency = "USD" | "PHP";
+
+interface SeoPackagePageProps {
+  currency: Currency;
+}
+
+interface SeoPlan {
+  icon: React.ComponentType<{ className?: string; size?: number }>;
+  title: string;
+  priceUSD?: number;
+  pricePHP?: number;
+  subtitle: string;
+  description: string;
+  features: string[];
+  button: string;
+  popular: boolean;
+}
+
 const seoPlans = [
   {
     icon: Search,
     title: "Basic",
-    price: "₱6,000",
+    priceUSD: 120,
+    pricePHP: 6000,
     subtitle: "Starting at",
     description:
       "Essential on-page SEO for small sites that need a solid search foundation.",
@@ -40,7 +59,8 @@ const seoPlans = [
   {
     icon: TrendingUp,
     title: "Standard",
-    price: "₱12,000",
+    priceUSD: 220,
+    pricePHP: 12000,
     subtitle: "Starting at",
     description:
       "Deeper optimization for growing businesses that want stronger local visibility.",
@@ -59,7 +79,8 @@ const seoPlans = [
   {
     icon: Target,
     title: "Advanced",
-    price: "₱20,000",
+    priceUSD: 380,
+    pricePHP: 20000,
     subtitle: "Starting at",
     description:
       "Full SEO enhancement for competitive markets and larger websites.",
@@ -75,7 +96,20 @@ const seoPlans = [
     button: "Let's Build",
     popular: false,
   },
-];
+ ] satisfies SeoPlan[];
+
+function formatPrice(plan: SeoPlan, activeCurrency: Currency) {
+  const amount = activeCurrency === "PHP" ? plan.pricePHP : plan.priceUSD;
+
+  if (typeof amount !== "number") {
+    return "Custom Quote";
+  }
+
+  const symbol = activeCurrency === "PHP" ? "₱" : "$";
+  const locale = activeCurrency === "PHP" ? "en-PH" : "en-US";
+
+  return `${symbol}${amount.toLocaleString(locale)}`;
+}
 
 const highlights = [
   {
@@ -136,7 +170,7 @@ const faqs = [
   },
 ];
 
-export default function SeoPackagePage() {
+export default function SeoPackagePage({ currency }: SeoPackagePageProps) {
   const heroRef = useRef<HTMLDivElement>(null);
   const pricingRef = useRef<HTMLDivElement>(null);
   const highlightsRef = useRef<HTMLDivElement>(null);
@@ -304,7 +338,7 @@ export default function SeoPackagePage() {
                           {plan.subtitle}
                         </p>
                         <h4 className="mt-2 break-words bg-gradient-to-r from-white to-blue-300 bg-clip-text text-3xl font-black leading-tight tracking-tight text-transparent sm:text-4xl">
-                          {plan.price}
+                          {formatPrice(plan, currency)}
                         </h4>
                       </div>
 
