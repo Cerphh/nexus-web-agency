@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, Menu, X } from "lucide-react";
@@ -16,6 +17,10 @@ export default function Navbar() {
   const ctaRef = useRef<HTMLAnchorElement>(null);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Get current path (e.g., "/pricing" -> "pricing")
+  const pathname = usePathname();
+  const pageName = pathname?.replace("/", "") || "home";
 
   useEffect(() => {
     const nav = navRef.current;
@@ -37,7 +42,7 @@ export default function Navbar() {
     tl.to(nav, {
       y: 0,
       opacity: 1,
-      duration: 1.2,
+      duration: .5,
       delay: 0.5,
     });
 
@@ -80,6 +85,7 @@ export default function Navbar() {
 
     // Sticky transition on scroll
     gsap.to(nav, {
+      border: 0,
       marginTop: 0,
       width: "100%",
       maxWidth: "100%",
@@ -145,7 +151,8 @@ export default function Navbar() {
     <div className="fixed top-0 left-0 w-full flex justify-center pointer-events-none z-50">
       <header
         ref={navRef}
-        className="mt-4 w-[92%] max-w-7xl pointer-events-auto backdrop-blur-md bg-zinc-950/70 border border-white/10 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]"
+        data-page={pageName}
+        className="mt-4 w-[92%] max-w-7xl pointer-events-auto backdrop-blur-md bg-zinc-950/70 border border-[#340034]/50 rounded-2xl data-[page=pricing]:border-blue-400/50 shadow-[0_0_10px_#8E33E7] data-[page=pricing]:shadow-[0_0_10px_#60A5FA] transition-all duration-300"
       >
         <div className="max-w-7xl mx-auto w-full px-6 py-3 flex items-center justify-between">
           {/* Logo */}
